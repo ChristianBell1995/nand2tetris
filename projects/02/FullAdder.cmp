@@ -1,9 +1,19 @@
 |   a   |   b   |   c   |  sum  | carry |
 |   0   |   0   |   0   |   0   |   0   |
-|   0   |   0   |   1   |   1   |   0   |
-|   0   |   1   |   0   |   1   |   0   |
-|   0   |   1   |   1   |   0   |   1   |
-|   1   |   0   |   0   |   1   |   0   |
-|   1   |   0   |   1   |   0   |   1   |
-|   1   |   1   |   0   |   0   |   1   |
-|   1   |   1   |   1   |   1   |   1   |
+|   0   |   0   |   1   |   1   |   0   |   not(a and b) and c = sum
+|   0   |   1   |   0   |   1   |   0   |   not(a and c) and b = sum
+|   0   |   1   |   1   |   0   |   1   |   not(a) and (b and c) = carry
+|   1   |   0   |   0   |   1   |   0   |   a and not(b and c) = sum
+|   1   |   0   |   1   |   0   |   1   |   not(b) and (a and c) = carry
+|   1   |   1   |   0   |   0   |   1   |   a and b and not(c) = carry
+|   1   |   1   |   1   |   1   |   1   |   a and b and c = sum and carry
+
+c or b and not(a) = sum
+a and not(c or b) = sum
+(c and b)  and not(a) = carry
+not(b) and (a and c) = carry
+a and b and not(c) = carry
+
+(c and b) or (a and c) or (b and c) = carry
+c or b or a = sum
+a and b and c = sum and carry
