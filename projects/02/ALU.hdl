@@ -60,7 +60,10 @@ CHIP ALU {
     Mux16(a=xandy, b=xaddy, sel=f, out=fresult);
     // if (no == 1) set out = !out   // bitwise not
     Not16(in=fresult, out=notfresult);
-    Mux16(a=fresult, b=notfresult, sel=f, out=out);
+    Mux16(a=fresult, b=notfresult, sel=no, out=out);
     // if (out == 0) set zr = 1
+    // Not(in=out, out=notout);
+    // And16(a=notout, b=true out=outequalszero);
+    // DMux(in=, sel=, a=zr, b=ng);
     // if (out < 0) set ng = 1
 }
