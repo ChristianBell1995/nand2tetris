@@ -62,11 +62,12 @@ CHIP ALU {
     Not16(in=fresult, out=notfresult);
     Mux16(a=fresult, b=notfresult, sel=no, out=out);
     // if (out == 0) set zr = 1
-    Or8Way(in=out[0..7], out=onepair);
-    Or8Way(in=out[8..15], out=twopair);
+    Mux16(a=fresult, b=notfresult, sel=no, out[0..7]=firsthalf, out[8..15]=secondhalf);
+    Or8Way(in=firsthalf, out=onepair);
+    Or8Way(in=secondhalf, out=twopair);
     Or(a=onepair, b=twopair, out=outiszero);
-    Not(in=outiszero, out=reversed);
-    DMux(in=true, sel=reversed, a=outnotzero, b=zr);
+    Not(in=outiszero, out=zr);
     // if (out < 0) set ng = 1
-
+    Mux16(a=fresult, b=notfresult, sel=no, out[15]=negative);
+    Mux(a=false, b=true, sel=negative, out=ng);
 }
