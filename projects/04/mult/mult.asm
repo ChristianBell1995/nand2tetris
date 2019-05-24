@@ -7,3 +7,21 @@
 // (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[2], respectively.)
 
 // Put your code here.
+
+// PSEUDO CODE:
+  // R0 * R1 = R2
+  // sum = 0
+  // for(i = 0, i < R0, i++)
+    // sum + R1
+  // return sum
+
+@0
+D=A
+@sum
+M=D     // set sum to 0
+
+@0
+D=A
+@i
+M=D     // set i to 0
+
