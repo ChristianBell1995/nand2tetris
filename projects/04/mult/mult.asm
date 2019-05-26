@@ -15,10 +15,15 @@
     // sum + R1
   // return sum
 
-@1
+@0
 D=A
 @i
-M=D     // set i to 1
+M=D     // set i to 0
+
+@0
+D=A
+@sum
+M=D     // set sum to 0
 
 (LOOP)
   @i
@@ -28,10 +33,10 @@ M=D     // set i to 1
   @END
   D;JEQ   // if i - RO == 0 END \ EXIT LOOP
 
-  @SUM
-  D=M     // get sum
   @R1
-  M=D+M   // R1 + sum
+  D=M   // get value of R1
+  @sum
+  M=D+M     // get sum
 
   @1
   D=A
@@ -40,12 +45,6 @@ M=D     // set i to 1
 
   @LOOP
   0;JMP   // go to the start of the loop
-
-(SUM)
-  @4
-  D=A
-  @R2
-  M=D     // set sum to 0
 
 (END)
   @END
