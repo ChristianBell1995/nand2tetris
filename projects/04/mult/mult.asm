@@ -17,34 +17,40 @@
 
 @0
 D=A
-@i
-M=D     // set i to 0
+@times
+M=D     // set times to 0
 
 @0
 D=A
 @sum
-M=D     // set sum to 0
+M=D     // set sum (R2) to 0
 
 (LOOP)
-  @i
-  D=M     // get i
+  @times
+  D=M     // get times
   @R0
-  D=M-D   // RO - i
-  @END
-  D;JEQ   // if i - RO == 0 END \ EXIT LOOP
+  D=M-D   // RO - times
+  @STOP
+  D;JEQ   // if times - RO == 0 END \ EXIT LOOP
 
   @R1
   D=M   // get value of R1
   @sum
-  M=D+M     // get sum
+  M=D+M     // add the value of R1 to sum (R2)
 
   @1
   D=A
-  @i
-  M=M+D   // increment i
+  @times
+  M=M+D   // increment times
 
   @LOOP
   0;JMP   // go to the start of the loop
+
+(STOP)
+  @sum   // get value of sum
+  D=M
+  @R2
+  M=D   // move variable sum into register 2
 
 (END)
   @END
