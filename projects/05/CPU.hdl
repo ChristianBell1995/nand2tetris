@@ -40,4 +40,25 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    // Instruction bit in (top left corner)
+    // if the instruction is an A instruction store it in the A register
+    // else it is a C instruction - route the bits to the relevant parts of the CPU
+    Mux16(a=aluout, b=instruction, sel=, out=muxtoa);
+    ARegister(in=muxtoa, load=, out=outa);
+    ARegister(in=muxtoa, load=, out=addressM);
+
+    // ALU section
+    Mux16(a=outa, b=inM, sel=, out=inMcontrol);
+    // C instructions jump bits determine the destination of the ALU
+    DRegister(in=aluout, load=, out=outd);
+    // C instruction has bits that refer to instructions to the ALU
+    ALU(x=inMcontrol, y=outd, zx=, nx=, zy=, ny=, f=, no=, out=outM, zr=, ng=);
+
+    // PC section (bottom)
+    // if reset == 1, PC = 0
+    // else 
+    //      if load == 1 (from ALU) PC = A (JUMP)
+    //      else PC++
+    PC(in=outa, load=, inc=, reset=reset, out=pc);
 }

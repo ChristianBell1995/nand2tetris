@@ -28,4 +28,18 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+    // mux to determine which chip has the address
+    // if load == 1 then the memory specified is overwritten by in
+
+    // a number of digits in the address will refer to Screen / keyboard / ram16k (similar to how the ram16k was worked out)
+    
+    // use some sort of: to determine which part should be loaded between screen and ram16k
+    DMux(in=load, sel=, a=, b=);
+
+    // use this: with the set address of the keyboard and the address to determine if we are reading from the kbd
+    And(a=, b=, out=);
+
+    RAM16K(in=in, load=load, address=, out=);
+    Screen(in=in, load=load, address=, out=);
+    Keyboard(out=);
 }
