@@ -34,12 +34,14 @@ CHIP Memory {
     // a number of digits in the address will refer to Screen / keyboard / ram16k (similar to how the ram16k was worked out)
     
     // use some sort of: to determine which part should be loaded between screen and ram16k
-    DMux(in=load, sel=, a=loadram, b=loadscreen);
+    DMux4Way(in=load, sel=address[13..14], a=loadram, b=loadramtwo, c=screen, d=kbd);
 
-    // use this: with the set address of the keyboard and the address to determine if we are reading from the kbd
-    And(a=, b=, out=);
-
-    RAM16K(in=in, load=loadram, address=, out=);
-    Screen(in=in, load=loadscreen, address=, out=);
-    Keyboard(out=);
+    // if either load ram load ram
+    Or(a=loadram, b=loadramtwo, out=ram);
+    // screen or ram is loaded depending on which load bit is changed to one
+    RAM16K(in=in, load=ram, address=address[0..13], out=ramOut);
+    Screen(in=in, load=screen, address=address[0..12], out=screenOut);
+    Keyboard(out=kbdOut);
+    // choose which out should be selected
+    Mux4Way16(a=ramOut, b=ramOut, c=screenOut, d=kbdOut, sel=address[13..14], out=out);
 }
