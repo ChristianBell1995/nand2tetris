@@ -42,15 +42,15 @@ CHIP CPU {
     // Put your code here:
 
     // Instruction bit in (top left corner)
-    // if the instruction is an A instruction store it in the A register
-    // else it is a C instruction - route the bits to the relevant parts of the CPU
     
-    // if an instruction is a C this should return 1 otherwise it will be a 0 (A)
-    And(a=instruction[15], b=true, out=aorc);
     // if the instruction is A write it into the a register otherwise keep the ALU output
-    Mux16(a=instruction, b=aluout, sel=aorc, out=muxtoa);
-    // instruction[5] determines if something is written to the A register
-    ARegister(in=muxtoa, load=instruction[5], out=outa, out[0..14]=addressM);
+    Mux16(a[15]=false, a[0..14]=instruction[0..14], b=aluout, sel=instruction[15], out=muxtoa);
+    // if a instruction this will be 1
+    Not(in=instruction[15], out=ainstruction);
+    // instruction[5] determines if something is written to the A register 
+    Or(a=ainstruction, b=instruction[5], out=loada);
+    ARegister(in=muxtoa, load=loada, out=outa, out[0..14]=addressM);
+
 
     // ALU section
     Mux16(a=outa, b=inM, sel=instruction[12], out=inMcontrol);
@@ -64,8 +64,8 @@ CHIP CPU {
     // instruction[6..11] refer to the inputs of the ALU
     ALU(x=outd, y=inMcontrol, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, out=aluout, zr=zr, ng=ng);
 
+
     // PC section (bottom)
-    
     // create value for whether the output of the alu is positive
     Or(a=zr, b=ng, out=zeroornegative);
     Not(in=zeroornegative, out=ispositive);
@@ -76,7 +76,6 @@ CHIP CPU {
     And(a=instruction[2], b=ng, out=jlt);
     // if JGT and out > 0
     And(a=instruction[0], b=ispositive, out=jgt);
-
     // Are any of the above values one
     Or(a=jeq, b=jlt, out=jeqorjlt);
     Or(a=jeqorjlt, b=jgt, out=jump);
