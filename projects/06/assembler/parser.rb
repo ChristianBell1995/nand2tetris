@@ -9,7 +9,7 @@ class Parser
   end
 
   def parse
-    return '' if @line.start_with?('\n') || @line.start_with?('//')
+    return '' if @line.start_with?('\n') || @line.start_with?('//') || @line == ''
     if @line.start_with?('@')
       a_instructions
     else
