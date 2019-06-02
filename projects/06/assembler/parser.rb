@@ -29,7 +29,6 @@ class Parser
     find_dest_bin
     find_jump_bin
     find_comp_bin
-    find_a_bin
     "111#{@a_bin}#{@comp_bin}#{@dest_bin}#{@jump_bin}".gsub(/\s+/, "")
   end
 
@@ -105,11 +104,12 @@ class Parser
       comp = @line.split(/=/).last
     end
     @comp_bin = COMP_MAPPING[comp]
+    find_a_bin(comp)
   end
 
   SET_A_TO_ONE = ['M', '!M', '-M', 'M+1', 'M-1', 'D+M', 'D-M', 'M-D', 'D&M', 'D|M'].freeze
 
-  def find_a_bin
+  def find_a_bin(comp)
     @a_bin = SET_A_TO_ONE.include?(comp) ? '1' : '0'
   end
 end

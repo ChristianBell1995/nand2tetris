@@ -10,8 +10,9 @@ file_to_read.each_line do |line|
   new_file_lines << parser.parse
 end
 
+filename = File.basename(file, ".asm")
 formatted_lines = new_file_lines.reject(&:empty?)
 
-File.open("test_file.hack", "w+") do |f|
+File.open("#{filename}.hack", "w+") do |f|
   formatted_lines.each { |element| f.puts(element) }
 end
