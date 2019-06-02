@@ -8,6 +8,7 @@ file_to_read = file.read.gsub!(/\r\n?/, "\n")
 new_file_lines = []
 # Generate symbol table by going through the file before parsing each line
 symbol_table = TrackSymbol.new(file_to_read)
+symbol_table.generate_symbol_table
 # Then parse each line into binary code
 file_to_read.each_line do |line|
   parser = Parser.new(line)
