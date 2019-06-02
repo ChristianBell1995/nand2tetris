@@ -1,6 +1,7 @@
 class Parser
-  def initialize(line)
+  def initialize(line, symbol_table)
     @line = line.strip
+    @symbol_table = symbol_table
     @line_bin = ''
     @dest_bin = '000'
     @jump_bin = '000'
@@ -9,8 +10,8 @@ class Parser
   end
 
   def parse
-    return '' if @line.start_with?('\n', '//') || @line == ''
-    if @line.start_with?('@', '(')
+    return '' if @line.start_with?('\n', '//', '(') || @line == ''
+    if @line.start_with?('@')
       a_instructions
     else
       c_instructions
@@ -20,9 +21,13 @@ class Parser
   private
 
   def a_instructions
-    integer = @line[1..-1].to_i
-    @line_bin = integer.to_s(2)
-    @line_bin = @line_bin.rjust(16, '0')
+    a_instruct = @line[1..-1]
+    if a_instruct.match(/^[0-9]*$/)
+      @line_bin = a_instruct.to_i.to_s(2)
+    else
+      @line_bin = @symbol_table[a_instruct].to_s(2)
+    end
+    @line_bin.rjust(16, '0')
   end
 
   def c_instructions

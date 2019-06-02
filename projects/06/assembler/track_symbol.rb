@@ -49,9 +49,10 @@ class TrackSymbol
         end_of_label = line.index(')')
         label = line.slice(1..end_of_label - 1)
         # Number equals the line after the label is declared
-        labels[label] = (line_count - label_count) + 1
+        labels[label] = (line_count - label_count)
         label_count += 1
       end
+      next if line.strip.start_with?('\n', '//') || line.strip == ''
       line_count += 1
     end
     labels
