@@ -61,7 +61,7 @@ class Parser
 
   def find_jump_bin
     if @line.include? ';'
-      jump = @line.split(/;/).last
+      jump = @line.split(/;/).last[0..2]
       @jump_bin = JUMP_MAPPING[jump]
     end
   end
